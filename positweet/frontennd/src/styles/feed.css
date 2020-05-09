@@ -1,0 +1,56 @@
+html{
+    height: 100%;
+}
+
+.row{
+  width:100%
+}
+
+.fit-image{
+width: 100%;
+object-fit: cover;
+height: 300px; /* only if you want fixed height */
+}
+
+.center {
+  margin: auto;
+  width: 50%;
+  text-align: center;
+  padding: 10px;
+}
+
+
+.neo{
+  border-radius:4px;
+  background-color:#E0E5EC;
+  box-shadow: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px  rgba(255,255,255, 0.5);
+}
+
+.center_navbar {
+  margin: auto;
+  width: 50%;
+  text-align: center;
+}
+
+
+.main {
+    margin:1px;
+   font-family: 'Roboto';
+   margin-left: 2%;
+  /* margin-top: 90px; */
+}
+
+.user{
+    height: 100%;
+    border-left: 1px;
+    padding-left: 5%;
+    
+}
+
+.feed{
+    /* padding-left: 6%; */
+}
+
+.common{
+    border-right: 1px;
+}

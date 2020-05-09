@@ -1,0 +1,17 @@
+.login {
+    margin:1px;
+   font-family: 'Roboto';
+  margin-top: 150px;
+}
+.center {
+  margin: auto;
+  width: 50%;
+  text-align: center;
+  padding: 10px;
+}
+
+input{
+  height:50px;
+    font-size:17pt;
+    width: 80%;
+}
