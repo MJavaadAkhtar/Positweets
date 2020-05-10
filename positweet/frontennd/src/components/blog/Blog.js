@@ -1,0 +1,283 @@
+import React from 'react';
+import '../../styles/feed.css';
+import { AwesomeButton, AwesomeButtonProgress } from "react-awesome-button";
+import "react-awesome-button/dist/styles.css";
+// import 'react-awesome-button/dist/themes';
+import {
+    Redirect
+} from "react-router-dom";
+import { func } from 'prop-types';
+import { PushSpinner, RotateSpinner } from "react-spinners-kit";
+
+class UserProperty extends React.Component {
+    constructor(props){
+        super(props)
+        this.state={
+            username:this.props.props.username,
+            fullname:"",
+            score:0,
+            id: this.props.props.id
+        }
+    }
+
+    componentDidMount(){
+        fetch('/api/Users/'+this.state.id,{
+            method:'GET'
+        }).then(res => res.json())
+        .then((data) => {
+
+            this.setState({
+                fullname:data.fall_name
+            })
+        })
+    }
+
+    render(){
+
+    return (
+        <div className="position-fixed">
+            <div className="font-weight-bold">
+                PosiTweet Username:
+                </div>
+
+            <div>
+                {'@' + this.state.username}
+            </div>
+
+            <br></br>
+
+            <div className="font-weight-bold">
+                Full Name:
+                </div>
+            <div>
+                {this.state.fullname}
+            </div>
+            <br></br>
+        </div>
+    )
+    }
+}
+
+function PostFeed(props) {
+    console.log(props.props)
+    return (
+        <div className="neo mt-3 mb-3 p-2 row">
+            {/* {props.props[0].is_RT ? <div className="text-secondary"> retweet < i className="fa fa-retweet" aria-hidden="true"></i> </div> : ""} */}
+            {/* <div className="right_align">
+                <small>{props.props[1]}</small>
+                    <span className="left_align col3" >
+                    {props.props[0]}
+                    </span>
+            </div> */}
+            {props.props[0]}
+            {/* <div>{props.props[2]? 0:1}</div> */}
+            {/* {props.props[0].media == "" ? "" : <img src={props.props[0].media} className="fit-image"></img>} */}
+        </div>
+    )
+
+}
+
+class Trending extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            text_area:"",
+            id:this.props.id,
+            getTweet: this.props.data_fun
+        }
+        this.handleChange = this.handleChange.bind(this)
+        this.onSubmit = this.onSubmit.bind(this)
+    }
+
+    // componentDidMount() {
+    //     fetch("api/getTrend", {
+    //         method: 'GET'
+    //     }).then(res => res.json())
+    //         .then((data) => {
+    //             this.setState({
+    //                 trend: data.trend
+    //             })
+    //         })
+    // }
+
+    handleChange(event) {
+        const { name, value } = event.target
+        this.setState({
+            [name]: value
+        })
+    }
+
+    onSubmit(next){
+        console.log('comeshhere');
+        fetch("api/addPost",{
+            method:'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                'id':this.state.id,
+                'post':this.state.text_area,
+                'sentiment':0
+            })
+        }).then(res => res.json())
+            .then((data) => {
+                console.log(data)
+            })
+
+        setTimeout(function (st=this.state) {
+            st.getTweet()
+            next()
+            this.setState({
+                text_area: ""
+            })
+        }.bind(this), 2000);
+
+       
+        
+    }
+
+    render() {
+
+        return (
+            <div>
+                {/* <form onSubmit={this.onSubmit}> */}
+                    <textarea rows="10" name="text_area" value={this.state.text_area} onChange={this.handleChange}></textarea>
+                <AwesomeButtonProgress
+                resultLabel="Posted" loadingLabel="Posting..." size='large' type='primary' 
+                action={(element, next) => this.onSubmit(next)}
+                >
+                    Post
+                </AwesomeButtonProgress>
+                {/* </form> */}
+                
+            </div>
+        )
+    }
+}
+
+class Blog extends React.Component {
+
+    constructor(props) {
+        super(props)
+
+        this.username = this.props.location.state.username
+        this.url_uname = this.props.match.params.name
+
+        this.state = {
+            userdata: {
+                username: this.url_uname,
+                refresh_required: this.username == this.url_uname ? false : true,
+                fullName: "",
+                id: this.props.location.state.id
+            },
+            is_login: this.props.location.state.is_login,
+            msg: this.props.location.state.msg,
+            posts:[]
+        }
+        this.handleChange = this.handleChange.bind(this)
+        
+        // this.submitSearch = this.submitSearch.bind(this)
+        this.getTweets = this.getTweets.bind(this)
+    }
+
+    getTweets() {
+        console.log('getTweet()')
+        fetch("/api/getBlogs", {
+            method: 'GET'
+        }).then(res => res.json())
+            .then((data) => {
+                this.setState({
+                    posts: data
+                })
+            })
+    }
+
+    componentDidMount() {
+
+        this.getTweets()
+
+    }
+
+    // submitSearch(event) {
+    //     var data_req = ""
+
+    //     this.setState({ loader: true })
+
+    //     fetch("/api/SearchUser", {
+    //         method: 'POST',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify({ 'username': this.state.search })
+    //     }).then(res => res.json())
+    //         .then((data) => {
+    //             data_req = data
+    //             if (data_req.error) {
+    //                 this.setState({
+    //                     err: data_req.error,
+    //                     loader: false
+    //                 })
+    //             } else {
+    //                 this.setState({
+    //                     err: "",
+    //                     userdata: {
+    //                         username: data.username,
+    //                         refresh_required: this.username == this.url_uname ? false : true,
+    //                         fullName: data.name,
+    //                         followr_count: data.follower_count,
+    //                         friend_count: data.friend_count
+    //                     },
+    //                     loader: false
+    //                 })
+    //             }
+    //         }).catch(err => {
+    //             console.log(err)
+    //         })
+    //     this.getTweets()
+    // }
+    handleChange(event) {
+        const { name, value } = event.target
+        this.setState({
+            [name]: value
+        })
+    }
+
+    render() {
+        const obj_post = this.state.posts
+        // obj_post.map((data)=> console.log(data))
+        // Object.keys(obj_post).map((data) => console.log(obj_post[data]))
+        // console.log(Object.keys(obj_post).length)
+
+        return (
+            <div className="main">
+
+                <nav className="navbar navbar-light neo fixed-top">
+                    <a className="navbar-brand" href="#">
+                        Bootstrap
+                    </a>
+                    <div className="center_navbar">
+                        <div className="search-container">
+                            <input type="text" placeholder="Search .." name="search" value={this.state.search} onChange={this.handleChange} />
+                            <AwesomeButton size="icon" type="primary"  ><i className="fa fa-search" /></AwesomeButton>
+                        </div>
+                    </div>
+                </nav>
+
+                <div className="row mt-5">
+
+                    <div className="col user mt-5">
+                        <UserProperty props={this.state.userdata} />
+                    </div>
+
+                    <div className="col-7 feed mt-4">
+                        {/* <RotateSpinner className="center" size={70} color="#686769" loading={this.state.loader} /> */}
+                        {Object.keys(obj_post).map((post) => <PostFeed props={obj_post[post]}  />)}
+                    </div>
+
+                    <div className="col common mt-5">
+                        <Trending id={this.state.userdata.id} data_fun={this.getTweets}/>
+                    </div>
+
+                </div>
+            </div>
+        )
+    }
+}
+
+export default Blog

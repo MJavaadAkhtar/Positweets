@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from blogspost.models import User,status
+from blogspost.models import User
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

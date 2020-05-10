@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import '../styles/Login.css';
 import { AwesomeButton } from "react-awesome-button";
 import "react-awesome-button/dist/styles.css";
+import { Redirect } from 'react-router';
+
 
 class Login extends React.Component{
 
@@ -11,7 +13,10 @@ class Login extends React.Component{
         this.state={
             'msg':this.props.msg,
             username:"",
-            pwd:""
+            pwd:"",
+            is_login:false,
+            err:"",
+            id:""
         }
         this.submitForm = this.submitForm.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -30,7 +35,12 @@ class Login extends React.Component{
             body: JSON.stringify(dict)
         }).then(res => res.json())
             .then((data) => {
-                console.log(data)
+                this.setState({
+                    is_login:data.login,
+                    err: data.login? "": "Wrong username or password",
+                    id: data.login? data.id : ""
+
+                })
             }).catch(err => {
                 console.log(err)
             })
@@ -44,6 +54,22 @@ class Login extends React.Component{
     }
 
     render(){
+
+        if (this.state.is_login){
+            const redirect_url = '/blog/' + this.state.username
+            return (
+                <Redirect to={{
+                    pathname: redirect_url,
+                    state: { 
+                        username: this.state.username, 
+                        msg: this.state.msg, 
+                        is_login: this.state.is_login,
+                        id:this.state.id
+                    }
+                }} />
+            )
+        }
+
         return(
             <div className="login">
                 <div className="center">
@@ -53,6 +79,7 @@ class Login extends React.Component{
                 </div>
 
                 <div className="search-container center">
+                    <p className="text-danger">{this.state.err}</p>
                     <form onSubmit={this.submitForm}>
                         <input type="text" placeholder="Username" name="username" valid={this.state.username} onChange={this.handleChange}/>
                         <input className="mt-3" type="password" placeholder="Password" name="pwd" valid={this.state.pwd} onChange={this.handleChange}/>

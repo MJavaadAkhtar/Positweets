@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/feed.css';
+import '../../styles/feed.css';
 import { AwesomeButton } from "react-awesome-button";
 import "react-awesome-button/dist/styles.css";
 // import 'react-awesome-button/dist/themes';
@@ -148,6 +148,16 @@ class Feed extends React.Component{
 
     }
 
+    componentDidUpdate(prevProps, prevState){
+        if (this.state.userdata.username !== prevState.userdata.username) {
+            // console.log(this.state.userdata.username)
+            this.getTweets()
+            this.setState({
+                loader:false
+            })
+        }
+    }
+
     submitSearch(event) {
         var data_req = ""
 
@@ -166,6 +176,7 @@ class Feed extends React.Component{
                         loader:false
                     })
                 } else {
+                    this.props.history.push('/tweeterFeed/' + data.username );
                     this.setState({
                         err: "",
                         userdata: {
@@ -175,13 +186,13 @@ class Feed extends React.Component{
                             followr_count: data.follower_count,
                             friend_count: data.friend_count
                         },
-                        loader:false
+                        // loader:false
                     })
                 }
             }).catch(err => {
                 console.log(err)
             })
-        this.getTweets()
+        // this.getTweets()
     }
     handleChange(event) {
         const { name, value } = event.target
@@ -217,7 +228,10 @@ class Feed extends React.Component{
                     </div>
 
                     <div className="col-7 feed mt-4">
-                        <RotateSpinner className="center" size={70} color="#686769" loading={this.state.loader} />
+                        <div className="center_spinner">
+                            <RotateSpinner size={70} color="#686769" loading={this.state.loader} />
+                        </div>
+                        
                         {tweets_user.map((tweet, i) => <TweeterFeed props={tweet} key={i} /> )}
                     </div>
 

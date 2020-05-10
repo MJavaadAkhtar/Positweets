@@ -6,10 +6,30 @@ html{
   width:100%
 }
 
+.center_spinner{
+    margin: auto;
+  width: 10%;
+  text-align: center;
+  padding: 10px;
+}
+
 .fit-image{
 width: 100%;
 object-fit: cover;
 height: 300px; /* only if you want fixed height */
+}
+
+textarea{
+  width: 100%;
+}
+
+.right_align {
+  text-align:right;
+  
+}
+
+.left_align{
+  float:left; 
 }
 
 .center {
