@@ -6,6 +6,11 @@ html{
   width:100%
 }
 
+hr{
+  margin-top:0rem;
+  margin-bottom: 0rem;
+}
+
 .center_spinner{
     margin: auto;
   width: 10%;

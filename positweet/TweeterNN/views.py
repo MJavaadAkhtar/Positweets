@@ -7,8 +7,8 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 import json
 import tweepy
-
 import re
+import requests
 
 
 consumer_key = 'Obww2LzMiZlTHFR5Xzs4zQQIi'
@@ -40,6 +40,13 @@ def getUser(username):
 def getTweets(username):
     tweets = api.user_timeline(screen_name=username,tweet_mode='extended')
     tweets_text=[]
+    
+    # sentiment_data = []
+    # for tweet in tweets:
+    #     tweet_data = tweet._json
+    #     sentiment_data.append([])
+
+
     for tweet in tweets:
         tweet_data = tweet._json
         if 'retweeted_status' in tweet_data: 
@@ -51,6 +58,7 @@ def getTweets(username):
                     'sentiment':1,
                     'is_RT':True,
                     'media': tweet_data['extended_entities']['media'][0]['media_url_https'] if 'extended_entities' in tweet_data else "",
+                    'sentiment':None
                     })
                 # tweets_text.append(clean_tweet.group(1))
                 tweets_text.append(temp)
@@ -61,7 +69,9 @@ def getTweets(username):
                     'sentiment':1,
                     'is_RT':True,
                     'media': tweet_data['extended_entities']['media'][0]['media_url_https'] if 'extended_entities' in tweet_data else "",
+                    'sentiment':None
                 })
+
                 # tweets_text.append(tweet_data['retweeted_status']['full_text'])
                 tweets_text.append(temp)
         else:
@@ -77,6 +87,7 @@ def getTweets(username):
                     'sentiment':1,
                     'is_RT':False,
                     'media': tweet_data['extended_entities']['media'][0]['media_url_https'] if 'extended_entities' in tweet_data else "",
+                    'sentiment':None
                 })
                 # tweets_text.append(clean_tweet.group(1))
                 tweets_text.append(temp)
@@ -87,10 +98,20 @@ def getTweets(username):
                     'sentiment':1,
                     'is_RT':False,
                     'media': tweet_data['extended_entities']['media'][0]['media_url_https'] if 'extended_entities' in tweet_data else "",
+                    'sentiment':None
                 })
                 # tweets_text.append(tweet_data['full_text'])
                 tweets_text.append(temp)
-    return tweets_text
+
+    url = 'http://127.0.0.1:5000/api/positweet'
+    data = {"data": tweets_text}
+    r = requests.post(url,  json=data)
+
+    # print(tweets_text)
+    # print('---')
+    # print(r.json()['data'])
+
+    return r.json()['data']
 
 def getTrending():
     trend = api.trends_place(id=3369)

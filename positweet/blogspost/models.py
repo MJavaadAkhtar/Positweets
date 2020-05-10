@@ -12,5 +12,5 @@ class Blogs(models.Model):
     U_ID = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
-    sentiment = models.BooleanField()
+    sentiment = models.IntegerField()
 

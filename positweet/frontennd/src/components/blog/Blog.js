@@ -61,17 +61,24 @@ class UserProperty extends React.Component {
 function PostFeed(props) {
     console.log(props.props)
     return (
-        <div className="neo mt-3 mb-3 p-2 row">
-            {/* {props.props[0].is_RT ? <div className="text-secondary"> retweet < i className="fa fa-retweet" aria-hidden="true"></i> </div> : ""} */}
-            {/* <div className="right_align">
-                <small>{props.props[1]}</small>
-                    <span className="left_align col3" >
-                    {props.props[0]}
-                    </span>
-            </div> */}
-            {props.props[0]}
-            {/* <div>{props.props[2]? 0:1}</div> */}
-            {/* {props.props[0].media == "" ? "" : <img src={props.props[0].media} className="fit-image"></img>} */}
+        <div className="neo mt-3 mb-3 p-2">
+            
+            <div> 
+                <small>{'@'+props.props[3]}</small> 
+            </div>
+
+            <div> 
+                {props.props[0]}
+            </div>
+            {/* <div className="text-secondary">{props.props[2]}</div> */}
+            <hr></hr>
+            <div className="right_align">
+                <small> {props.props[1]}</small>
+                <span className="left_align col3" >
+                    {props.props[2] == 0 ? <small className="text-danger">&#128533; negative</small> : props.props[2] == 1 ? <small className="text-success">&#128512; positive</small> : <small className="text-secondary">&#x2753; unknown</small>}
+
+                </span>
+            </div>
         </div>
     )
 
@@ -239,6 +246,15 @@ class Blog extends React.Component {
     }
 
     render() {
+        if (this.state.is_login == false){
+            <Redirect to={{
+                pathname:'/login',
+                state:{
+                    is_login:this.state.is_login
+                }
+            }}
+            />
+        }
         const obj_post = this.state.posts
         // obj_post.map((data)=> console.log(data))
         // Object.keys(obj_post).map((data) => console.log(obj_post[data]))
@@ -267,7 +283,7 @@ class Blog extends React.Component {
 
                     <div className="col-7 feed mt-4">
                         {/* <RotateSpinner className="center" size={70} color="#686769" loading={this.state.loader} /> */}
-                        {Object.keys(obj_post).map((post) => <PostFeed props={obj_post[post]}  />)}
+                        {Object.keys(obj_post).map((post,i) => <PostFeed props={obj_post[post]} key={i} />)}
                     </div>
 
                     <div className="col common mt-5">

@@ -60,11 +60,14 @@ function UserProperty(props){
 }
 
 function TweeterFeed(props){
+    // console.log(props.props[0])
         return (
             <div className="neo mt-3 mb-3 p-2">
                 {props.props[0].is_RT ? <div className="text-secondary"> retweet < i className="fa fa-retweet" aria-hidden="true"></i> </div>:""}
                 {props.props[0].text}
                 {props.props[0].media ==  ""?"":<img src={props.props[0].media} className="fit-image"></img>}
+                <br></br>
+                {props.props[0].sentiment == 0 ? <small className="mt-1 text-danger">&#128533; negative</small> : <small className="mt-1 text-success">&#128512; positive</small>}
             </div>
         )
     
