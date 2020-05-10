@@ -4,6 +4,7 @@ import '../styles/Login.css';
 import { AwesomeButton } from "react-awesome-button";
 import "react-awesome-button/dist/styles.css";
 import axios from 'axios';
+import { Redirect } from 'react-router';
 
 
 class Signup extends React.Component {
@@ -15,6 +16,9 @@ class Signup extends React.Component {
             fullname:"",
             u_uid:"",
             pwd:"",
+            is_login:false,
+            err:"",
+            id:""
         }
         this.send_form = this.send_form.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -33,7 +37,18 @@ class Signup extends React.Component {
             body: JSON.stringify(dict)
         }).then(res => res.json())
             .then((data) => {
-                console.log(data)
+                if (data.login){
+                    this.setState({
+                        is_login: true,
+                        err:"",
+                        id:data.id
+                    })
+                }else{
+                    this.setState({
+                        err: "username is already taken"
+                    })
+                }
+                
             }).catch(err => {
                 console.log(err)
             })
@@ -47,12 +62,31 @@ class Signup extends React.Component {
     }
 
     render() {
+
+        if (this.state.is_login){
+            const redirect_url = '/blog/' + this.state.u_uid
+            return (
+                <Redirect to={{
+                    pathname: redirect_url,
+                    state: {
+                        username: this.state.username,
+                        msg: this.state.msg,
+                        is_login: this.state.is_login,
+                        id: this.state.id,
+                        fullname:this.state.fullname
+                    }
+                }} />
+            )
+        }
+
         return (
             <div>
-                <AwesomeButton size="icon" type="primary" href="/"><i className="fa fa-arrow-left" /></AwesomeButton>
+                <AwesomeButton className="size" size="icon" type="primary" href="/login"><i className="fa fa-arrow-left" /></AwesomeButton>
                 <div className="login">
                     <div className="center">
-                        <h2>{this.state.msg.title}</h2>
+                        <AwesomeButton className="size" size="icon" type="primary" href="/" ><i className="fa fa-home" /></AwesomeButton>
+                        <br></br>
+                        <h2>{this.state.msg.name}</h2>
                         <br></br>
                         <h5>{this.state.msg['signup-screen']}</h5>
                     </div>

@@ -73,16 +73,20 @@ class App extends React.Component {
     return (
       <div className="App">
 
-        <div className="neo center">
+        <div className="neo center_header">
 
-          <div className="center">
+          <div className="center_header">
             <h2>{this.state.msg.title}</h2>
           </div>
 
-          <div className="center mt-5">
+          <div className="center_header mt-5">
             <p>
               {this.state.msg.monologue}
             </p>
+            <ul>
+              <li>Can we use sentiment analysis to filter out negative contents using an LSTM. More detail regarding my trained LSTM can be found <a target="_blank" href="https://github.com/MJavaadAkhtar/sentiment-analysis-LSTM">here</a>.</li>
+              <li>Can we use generative auto encoders to create positive contents. More information regarding my autoencoder coming soon.</li>
+            </ul>
           </div>
 
         </div>

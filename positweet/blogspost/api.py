@@ -29,13 +29,21 @@ class UserViewSet(APIView):
     def post(self, request):
         login_req = json.loads(request.body)
         pwd = make_password(login_req['password'])
-        print(login_req)
+
+        check_user = User.objects.filter(username=login_req['username']).count() == 1
+        if (check_user):
+            return Response({'login':False})
+        
+
         queryset = User.objects.create(
             full_name = login_req['full_name'],
             username = login_req['username'],
             password = pwd
         )
-        return Response({'true':1})
+
+        id_ = User.objects.filter(username=login_req['username'])[0].id
+
+        return Response({'login':True, "id":id_})
 
 class LoginUser(APIView):
     def post(self, request):
@@ -44,7 +52,7 @@ class LoginUser(APIView):
         bool_login = check_password(login_req['password'],queryset.password)
 
         if bool_login:
-            return Response({'username':login_req['username'],'login':True, 'id':queryset.id})
+            return Response({'username':login_req['username'],'login':True, 'id':queryset.id,'fullname':queryset.full_name})
         # serializer = UserNameSerializer(queryset, many=False)
         return Response({'login':False})
 
@@ -68,7 +76,7 @@ class postBlogs(APIView):
         blogs = json.loads(request.body)
         querysetFetch = User.objects.get(id=blogs['id'])
 
-        url = 'http://127.0.0.1:5000/api/one'
+        url = 'https://www.sentiment-analysis-api.site/api/one'
         data = {"data": blogs['post']}
         r = requests.post(url,  json=data)
        

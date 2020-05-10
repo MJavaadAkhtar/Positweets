@@ -213,8 +213,8 @@ class Feed extends React.Component{
             <div className="main">
                 
                 <nav className="navbar navbar-light neo fixed-top">
-                    <a className="navbar-brand" href="#">
-                            Bootstrap
+                    <a className="navbar-brand" href="/">
+                            Positweet
                     </a>
                     <div className="center_navbar">
                         <div className="search-container">

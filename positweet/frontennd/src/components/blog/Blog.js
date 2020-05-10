@@ -14,22 +14,10 @@ class UserProperty extends React.Component {
         super(props)
         this.state={
             username:this.props.props.username,
-            fullname:"",
+            fullname: this.props.props.fullname,
             score:0,
             id: this.props.props.id
         }
-    }
-
-    componentDidMount(){
-        fetch('/api/Users/'+this.state.id,{
-            method:'GET'
-        }).then(res => res.json())
-        .then((data) => {
-
-            this.setState({
-                fullname:data.fall_name
-            })
-        })
     }
 
     render(){
@@ -96,17 +84,6 @@ class Trending extends React.Component {
         this.onSubmit = this.onSubmit.bind(this)
     }
 
-    // componentDidMount() {
-    //     fetch("api/getTrend", {
-    //         method: 'GET'
-    //     }).then(res => res.json())
-    //         .then((data) => {
-    //             this.setState({
-    //                 trend: data.trend
-    //             })
-    //         })
-    // }
-
     handleChange(event) {
         const { name, value } = event.target
         this.setState({
@@ -164,25 +141,52 @@ class Blog extends React.Component {
 
     constructor(props) {
         super(props)
-
-        this.username = this.props.location.state.username
-        this.url_uname = this.props.match.params.name
-
-        this.state = {
-            userdata: {
+        console.log(this.props.location)
+        if (this.props.location.state == undefined){
+            this.temp_userdata = {
+                username: "",
+                refresh_required: false,
+                fullname: "",
+                id: ""}
+            this.login = false,
+            this.msg = ""
+        } 
+        else{
+            this.username = this.props.location.state.username
+            this.url_uname = this.props.match.params.name
+            this.temp_userdata = {
                 username: this.url_uname,
                 refresh_required: this.username == this.url_uname ? false : true,
-                fullName: "",
+                fullname: this.props.location.state.fullname,
                 id: this.props.location.state.id
-            },
-            is_login: this.props.location.state.is_login,
-            msg: this.props.location.state.msg,
-            posts:[]
+            }
+            this.login = this.props.location.state.is_login,
+            this.msg = this.props.location.state.msg
+        }
+       
+
+        // this.state = {
+        //     userdata: {
+        //         username: this.url_uname,
+        //         refresh_required: this.username == this.url_uname ? false : true,
+        //         fullName: "",
+        //         id: this.props.location.state.id
+        //     },
+        //     is_login: this.props.location.state.is_login,
+        //     msg: this.props.location.state.msg,
+        //     posts:[]
+        // }
+        this.state = {
+            userdata: this.temp_userdata,
+            is_login: this.login,
+            msg: this.msg,
+            posts: []
         }
         this.handleChange = this.handleChange.bind(this)
         
         // this.submitSearch = this.submitSearch.bind(this)
         this.getTweets = this.getTweets.bind(this)
+        this.logoutSubmit = this.logoutSubmit.bind(this)
     }
 
     getTweets() {
@@ -245,15 +249,29 @@ class Blog extends React.Component {
         })
     }
 
+    logoutSubmit(event){
+        const temp_userdata = {
+            username: "",
+            refresh_required: false,
+            fullname: "",
+            id: ""
+        }
+        this.setState({
+            userdata:temp_userdata,
+            is_login:false
+        })
+    }
+
     render() {
         if (this.state.is_login == false){
+            return(
             <Redirect to={{
                 pathname:'/login',
                 state:{
                     is_login:this.state.is_login
                 }
             }}
-            />
+            />)
         }
         const obj_post = this.state.posts
         // obj_post.map((data)=> console.log(data))
@@ -265,7 +283,7 @@ class Blog extends React.Component {
 
                 <nav className="navbar navbar-light neo fixed-top">
                     <a className="navbar-brand" href="#">
-                        Bootstrap
+                        Positweet
                     </a>
                     <div className="center_navbar">
                         <div className="search-container">
@@ -273,6 +291,10 @@ class Blog extends React.Component {
                             <AwesomeButton size="icon" type="primary"  ><i className="fa fa-search" /></AwesomeButton>
                         </div>
                     </div>
+                    <div className="form-inline">
+                        <AwesomeButton size="medium" type="secondary" onPress={this.logoutSubmit} >Logout</AwesomeButton>
+                    </div>
+                    
                 </nav>
 
                 <div className="row mt-5">

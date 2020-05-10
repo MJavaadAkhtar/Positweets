@@ -16,7 +16,8 @@ class Login extends React.Component{
             pwd:"",
             is_login:false,
             err:"",
-            id:""
+            id:"",
+            fullname:""
         }
         this.submitForm = this.submitForm.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -38,7 +39,8 @@ class Login extends React.Component{
                 this.setState({
                     is_login:data.login,
                     err: data.login? "": "Wrong username or password",
-                    id: data.login? data.id : ""
+                    id: data.login? data.id : "",
+                    fullname: data.login? data.fullname:""
 
                 })
             }).catch(err => {
@@ -64,7 +66,8 @@ class Login extends React.Component{
                         username: this.state.username, 
                         msg: this.state.msg, 
                         is_login: this.state.is_login,
-                        id:this.state.id
+                        id:this.state.id,
+                        fullname:this.state.fullname
                     }
                 }} />
             )
@@ -73,7 +76,9 @@ class Login extends React.Component{
         return(
             <div className="login">
                 <div className="center">
-                    <h2>{this.state.msg.title}</h2>
+                    <AwesomeButton className="size" size="icon" type="primary" href="/" ><i className="fa fa-home" /></AwesomeButton>
+                    <br></br>
+                    <h2>{this.state.msg.name}</h2>
                     <br></br>
                     <h5>{this.state.msg['login-screen']}</h5>
                 </div>
