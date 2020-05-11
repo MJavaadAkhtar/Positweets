@@ -1,1 +1,1 @@
-web: gunicorn positweet.wsgi
+web: cd positweet && gunicorn positweet.wsgi
