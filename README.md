@@ -7,6 +7,7 @@ A full-stack web application integrated with Twitter API to identify sentiments 
 2. [Features](#features)
 3. [Application Breakdown](#application-breakdown)
 4. [Challenges](#challenges)
+5. [Future Works](#future-works)
 
 
 ### Overview
