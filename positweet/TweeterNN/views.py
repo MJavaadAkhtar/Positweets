@@ -9,13 +9,14 @@ import json
 import tweepy
 import re
 import requests
+import os
 
 
-consumer_key = 'Obww2LzMiZlTHFR5Xzs4zQQIi'
-consumer_secret = 'ODldKVteBOwKYIBzDkXNaGKXD0l2f4TiiubVRVgwPhiV7Q0tPb'
+consumer_key = os.environ.get('CONSUMER_KEY')
+consumer_secret = os.environ.get('CONSUMER_SECRET')
 
-access_token = '1252825450474160129-wWSN88c9N0xqvpwcO9EHJu1CFTPO8p'
-access_token_secret = 'LOo2WxCRgAOpGD0uiL6JqwG16EgXW5mBZmTORrNRJfioq'
+access_token = os.environ.get('ACCESS_TOKEN')
+access_token_secret = os.environ.get('ACCESS_TOKEN_SECRET')
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
