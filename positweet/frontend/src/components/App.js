@@ -95,7 +95,7 @@ class App extends React.Component {
 
         <div className="center neo mt-5">
           <div className="search-container">
-            <input type="text" placeholder="Search.." name="search" valid={this.state.search} onChange={this.handleChange} />
+            <input type="text" placeholder="Search a twitter username.. e.g BillGates" name="search" valid={this.state.search} onChange={this.handleChange} />
             <AwesomeButton size="icon" type="primary" onPress={this.submitSearch}><i className="fa fa-search" /></AwesomeButton>
           </div>
         </div>
