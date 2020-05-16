@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode development ./positweet/frontennd/src/index.js --output ./positweet/frontennd/static/frontend/main.js",
-    "build": "webpack --mode production ./positweet/frontennd/src/index.js --output ./positweet/frontennd/static/frontend/main.js"
+    "dev": "webpack --mode development ./positweet/frontend/src/index.js --output ./positweet/frontend/static/frontend/main.js",
+    "build": "webpack --mode production ./positweet/frontend/src/index.js --output ./positweet/frontend/static/frontend/main.js"
   },
   "keywords": [],
   "author": "",
