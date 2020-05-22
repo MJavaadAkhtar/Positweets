@@ -5,8 +5,14 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 import json
 from .views import getUser, getTweets, getTrending
+import os
 
-
+class checkOSvariable(APIView):
+    def get(self,request):
+        if 'CONSUMER_KEY' in os.environ and 'CONSUMER_SECRET' in os.environ and 'ACCESS_TOKEN' in os.environ and 'ACCESS_TOKEN_SECRET' in os.environ:
+            return Response({'keys':True})
+        else:
+            return Response({'keys':False})
 
 class UserData(APIView):
     def post(self, request):

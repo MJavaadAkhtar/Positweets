@@ -16,11 +16,23 @@ class App extends React.Component {
       search:"",
       err:"",
       userData:{},
-      redirect_to_feed: false
+      redirect_to_feed: false,
+      OSvariable:""
       
     }
     this.handleChange = this.handleChange.bind(this)
     this.submitSearch = this.submitSearch.bind(this)
+  }
+
+  componentDidMount(){
+    fetch("/api/checkOSvariable")
+    .then(response => response.json())
+      .then(data => {
+        this.setState({
+          OSvariable: data.keys
+        })
+      }
+        );
   }
 
   handleChange(event) {
@@ -95,8 +107,11 @@ class App extends React.Component {
 
         <div className="center neo mt-5">
           <div className="search-container">
-            <input type="text" placeholder="Search a twitter username.. e.g BillGates" name="search" valid={this.state.search} onChange={this.handleChange} />
-            <AwesomeButton size="icon" type="primary" onPress={this.submitSearch}><i className="fa fa-search" /></AwesomeButton>
+            <input type="text" placeholder="Search a twitter username.. e.g BillGates" name="search" valid={this.state.search}
+             onChange={this.handleChange} 
+             disabled={!this.state.OSvariable}
+             />
+            <AwesomeButton size="icon" type="primary" onPress={this.submitSearch} ><i className="fa fa-search" /></AwesomeButton>
           </div>
         </div>
 

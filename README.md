@@ -6,6 +6,7 @@ A full-stack web application integrated with Twitter API to identify sentiments 
 1. [Overview](#Overview)
 2. [Features](#features)
 3. [Application Breakdown](#application-breakdown)
+4. [Installation Guide](#installation-guide)
 4. [Challenges](#challenges)
 5. [Future Work](#future-work)
 
@@ -29,6 +30,129 @@ The application is made in Django(python) in its backend and React in its fronte
 - __TweeterNN__: This module primarily handles all the backend twitter related interaction. The module is connected with the frontend using a REST API. The REST API functions primarily interact with Twitter API and Sentiment Analysis API to fetch and send data from the frontend.
 <small>Yes the name is intentionally tweeter instead of twitter :) </small> 
 - __blogspot__: This module primarily handles all the backend regarding blogs and posts inside the positweet platform. The module is connected with the frontend using REST API to create, fetch, and update users and blog posts. Generative autoencoder bots posts inside the positweet platforms.
+
+### Installation Guide:
+Installation for this application is made very easy. If you already have required twitter development account, follow procedure 1 else follow procedure 2.
+
+##### Procedure 1:
+<ol>
+<li>
+First you have set up some environment variables. In you environment variable, set the following variables:
+
+```sh
+export CONSUMER_KEY= # your consumer_key from twitter dev account
+export CONSUMER_SECRET= # your consumer_secret from twitter dev account
+
+export ACCESS_TOKEN= # your access_token from twitter dev account
+export ACCESS_TOKEN_SECRET= # your access_token_secret from twitter dev account
+```
+</li>
+
+<li>
+Now you have to set up environment variable for Django application as follows:
+
+```sh
+export SECRET_KEY= # Your secret key"
+export DEBUG_VALUE="True"
+```
+
+You can create secret key value by writing `import secrets; secrets.token_hex(24)` in python console.
+
+</li>
+
+<li>
+Once you have finished step 1 and 2, you are ready to run your application. We are goinng to do the following:
+
+```sh
+>>> git clone https://github.com/MJavaadAkhtar/Positweets.git
+>>> cd Positweets/
+
+# installing python virtual environment and pip dependencies
+>>> python3 -m pip install virtualenv
+>>> virtualenv venv
+>>> source ./venv/bin/activate
+>>> pip install -r requirements.txt
+>>> cd positweet/
+
+# Installing React dependencies
+>>> npm install
+>>> npm run dev
+
+# run application
+>>> python manage.py runserver
+```
+
+Now you can access your site on post 80000.
+</li>
+
+<li>
+(optional) if you wannt to integerate it with database, run:
+
+```sh
+>>> python manage.py makemigrations
+>>> python manage.py migrate
+>>> python manage.py runserver
+```
+</li>
+
+</ol>
+
+##### Procedure 2:
+If you do not have Twitter Api access tokens, you wont be able to take advantage of twitter api. However you can still access the blog portion of the application.
+
+<ol>
+
+
+<li>
+First you have to set up environment variable in your OS for the application as follows:
+
+```sh
+export SECRET_KEY= # Your secret key"
+export DEBUG_VALUE="True" 
+```
+
+You can create secret key value by executing `import secrets; secrets.token_hex(24)` in python console.
+
+</li>
+
+<li>
+Now you are ready to run your application. We are goinng to do the following:
+
+```sh
+>>> git clone https://github.com/MJavaadAkhtar/Positweets.git
+>>> cd Positweets/
+
+# installing python virtual environment and pip dependencies
+>>> python3 -m pip install virtualenv
+>>> virtualenv venv
+>>> source ./venv/bin/activate
+>>> pip install -r requirements.txt
+>>> cd positweet/
+
+# Installing React dependencies
+>>> npm install
+>>> npm run dev
+
+# run application
+>>> python manage.py runserver
+```
+
+Now you can access your site on post 80000.
+</li>
+
+<li>
+(optional) if you wannt to integerate it with database, run:
+
+```sh
+>>> python manage.py makemigrations
+>>> python manage.py migrate
+>>> python manage.py runserver
+```
+</li>
+
+</ol>
+
+
  
 ### Challenges:
 This project came with many challenges with it. Here is a list of issues proved to be quite challenging:
