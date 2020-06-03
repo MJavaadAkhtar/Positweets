@@ -26,7 +26,7 @@ class UserData(APIView):
 class fetchTweets(APIView):
     def post(self, request):
         searchData = json.loads(request.body)
-        tweets = getTweets(searchData['username'])
+        tweets = getTweets(searchData['username']['username'],searchData['username']['count'])
         return Response({"tweet":tweets})
     
 class fetchTrend(APIView):

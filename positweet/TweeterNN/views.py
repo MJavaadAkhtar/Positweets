@@ -41,8 +41,8 @@ def getUser(username):
         if e.args[0][0]['code'] == 50:
             return ['error']
 
-def getTweets(username):
-    tweets = api.user_timeline(screen_name=username,tweet_mode='extended')
+def getTweets(username, cnt):
+    tweets = api.user_timeline(screen_name=username,tweet_mode='extended', count=cnt)
     tweets_text=[]
     
     # sentiment_data = []

@@ -2,7 +2,7 @@ import React from 'react';
 import '../../styles/feed.css';
 import { AwesomeButton } from "react-awesome-button";
 import "react-awesome-button/dist/styles.css";
-// import 'react-awesome-button/dist/themes';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import {
     Redirect
 } from "react-router-dom";
@@ -62,6 +62,7 @@ function UserProperty(props){
 function TweeterFeed(props){
     // console.log(props.props[0])
         return (
+
             <div className="neo mt-3 mb-3 p-2">
                 {props.props[0].is_RT ? <div className="text-secondary"> retweet < i className="fa fa-retweet" aria-hidden="true"></i> </div>:""}
                 {props.props[0].text}
@@ -69,6 +70,7 @@ function TweeterFeed(props){
                 <br></br>
                 {props.props[0].sentiment == 0 ? <small className="mt-1 text-danger">&#128533; negative</small> : <small className="mt-1 text-success">&#128512; positive</small>}
             </div>
+
         )
     
 }
@@ -120,6 +122,7 @@ class Feed extends React.Component{
                 fullName: this.props.location.state.name,
                 followr_count: this.props.location.state.follower_count,
                 friend_count: this.props.location.state.friend_count,
+                count: 20
             },
             tweets:[],
             search: this.url_uname,
@@ -133,10 +136,11 @@ class Feed extends React.Component{
     }
 
     getTweets(){
+
         fetch("/api/getTweets", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 'username': this.state.userdata.username })
+            body: JSON.stringify({ 'username': this.state.userdata })
         }).then(res => res.json())
             .then((data) => {
                 this.setState({
@@ -235,7 +239,26 @@ class Feed extends React.Component{
                             <RotateSpinner size={70} color="#686769" loading={this.state.loader} />
                         </div>
                         
+                        <InfiniteScroll
+                            dataLength={tweets_user.length-5} //This is important field to render the next data
+                            next={() => {
+                                let tempUserdata = this.state.userdata
+                                tempUserdata.count = tempUserdata.count+10
+                                this.setState({
+                                userdata:tempUserdata
+                            })
+
+                            this.getTweets()
+                        }
+                        }
+                            style={{overflow:"inherit"}}
+                            hasMore={true}
+                            loader={<h4>Loading...</h4>}
+                            >
                         {tweets_user.map((tweet, i) => <TweeterFeed props={tweet} key={i} /> )}
+                            </InfiniteScroll>
+
+
                     </div>
 
                     <div className="col common mt-5">

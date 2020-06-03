@@ -66,3 +66,7 @@ a.sign{
 --button-anchor-color-hover: #f1bfa0;
 --button-anchor-border: 1px solid #8c633c;
 }
+
+.infinite-scroll-component {
+  overflow: inherit;
+}
