@@ -18,7 +18,8 @@ class Signup extends React.Component {
             pwd:"",
             is_login:false,
             err:"",
-            id:""
+            id:"",
+            email:"",
         }
         this.send_form = this.send_form.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -29,7 +30,8 @@ class Signup extends React.Component {
         const dict = {
             "full_name":this.state.fullname,
             "username":this.state.u_uid,
-            "password":this.state.pwd
+            "password":this.state.pwd,
+            "email":this.state.email
         }
         fetch("api/addUsers/", {
             method: "POST",
@@ -95,6 +97,7 @@ class Signup extends React.Component {
                         <form onSubmit={this.send_form}>
                             <input type="text" placeholder="Full Name" name="fullname" valid={this.state.fullname} onChange={this.handleChange}/>
                             <input className="mt-2" type="text" placeholder="username" name="u_uid" valid={this.state.u_uid} onChange={this.handleChange}/>
+                            <input className="mt-2" type="email" placeholder="Email" name="email" valid={this.state.email} onChange={this.handleChange} />
                             <input className="mt-2" type="password" placeholder="Password" name="pwd" valid={this.state.pwd} onChange={this.handleChange}/>
                             <AwesomeButton className="mt-3" type="primary submit" size="large">Sign Up</AwesomeButton>
                         </form>

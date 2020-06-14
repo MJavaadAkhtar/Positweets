@@ -72,12 +72,13 @@ function PostFeed(props) {
 
 }
 
-class Trending extends React.Component {
+class PostBlog extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             text_area:"",
             id:this.props.id,
+            title:"",
             getTweet: this.props.data_fun
         }
         this.handleChange = this.handleChange.bind(this)
@@ -99,7 +100,8 @@ class Trending extends React.Component {
             body: JSON.stringify({
                 'id':this.state.id,
                 'post':this.state.text_area,
-                'sentiment':0
+                'sentiment':0,
+                'title':this.state.title
             })
         }).then(res => res.json())
             .then((data) => {
@@ -110,7 +112,8 @@ class Trending extends React.Component {
             st.getTweet()
             next()
             this.setState({
-                text_area: ""
+                text_area: "",
+                title:""
             })
         }.bind(this), 2000);
 
@@ -123,7 +126,8 @@ class Trending extends React.Component {
         return (
             <div>
                 {/* <form onSubmit={this.onSubmit}> */}
-                    <textarea rows="10" name="text_area" value={this.state.text_area} onChange={this.handleChange}></textarea>
+                <input type="text" placeholder="Search .." name="title" value={this.state.title} onChange={this.handleChange} />
+                <textarea rows="10" name="text_area" value={this.state.text_area} onChange={this.handleChange}></textarea>
                 <AwesomeButtonProgress
                 resultLabel="Posted" loadingLabel="Posting..." size='large' type='primary' 
                 action={(element, next) => this.onSubmit(next)}
@@ -309,7 +313,7 @@ class Blog extends React.Component {
                     </div>
 
                     <div className="col common mt-5">
-                        <Trending id={this.state.userdata.id} data_fun={this.getTweets}/>
+                        <PostBlog id={this.state.userdata.id} data_fun={this.getTweets}/>
                     </div>
 
                 </div>

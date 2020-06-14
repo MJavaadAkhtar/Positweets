@@ -29,6 +29,7 @@ class UserViewSet(APIView):
     def post(self, request):
         login_req = json.loads(request.body)
         pwd = make_password(login_req['password'])
+        print(login_req['email'])
 
         check_user = User.objects.filter(username=login_req['username']).count() == 1
         if (check_user):
