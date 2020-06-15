@@ -14,4 +14,5 @@ class Blogs(models.Model):
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     sentiment = models.IntegerField()
+    title = models.CharField(max_length=150)
 

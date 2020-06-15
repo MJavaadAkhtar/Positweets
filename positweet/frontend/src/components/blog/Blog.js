@@ -55,7 +55,13 @@ function PostFeed(props) {
                 <small>{'@'+props.props[3]}</small> 
             </div>
 
-            <div> 
+            <div>
+                <p style={{fontWeight:'bold', textDecoration:'underline',textAlign:'center', marginBottom:'0em' }} >
+                    {props.props[4]}
+                    </p>
+            </div>
+            <hr></hr>
+            <div style={{marginTop:'1em', marginBottom:'0.5em'}} > 
                 {props.props[0]}
             </div>
             {/* <div className="text-secondary">{props.props[2]}</div> */}
@@ -79,7 +85,8 @@ class PostBlog extends React.Component {
             text_area:"",
             id:this.props.id,
             title:"",
-            getTweet: this.props.data_fun
+            getTweet: this.props.data_fun,
+            error:""
         }
         this.handleChange = this.handleChange.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
@@ -106,6 +113,9 @@ class PostBlog extends React.Component {
         }).then(res => res.json())
             .then((data) => {
                 console.log(data)
+                this.setState({
+                    error:data.error
+                })
             })
 
         setTimeout(function (st=this.state) {
@@ -113,7 +123,7 @@ class PostBlog extends React.Component {
             next()
             this.setState({
                 text_area: "",
-                title:""
+                title:"",
             })
         }.bind(this), 2000);
 
@@ -124,16 +134,22 @@ class PostBlog extends React.Component {
     render() {
 
         return (
-            <div>
+            <div className='sticky-top' style={{top:'5em'}}>
                 {/* <form onSubmit={this.onSubmit}> */}
-                <input type="text" placeholder="Search .." name="title" value={this.state.title} onChange={this.handleChange} />
+        <p style={{color:'red'}}>{this.state.error}</p>
+                <input style={{height:'30px', fontSize:'10pt', width:'100%', marginBottom:'1em'}}
+                type="text" placeholder="Title" name="title" value={this.state.title} onChange={this.handleChange} />
                 <textarea rows="10" name="text_area" value={this.state.text_area} onChange={this.handleChange}></textarea>
-                <AwesomeButtonProgress
+                <AwesomeButtonProgress 
                 resultLabel="Posted" loadingLabel="Posting..." size='large' type='primary' 
+                disabled={this.state.title == '' || this.state.text_area == ''? true:false}
                 action={(element, next) => this.onSubmit(next)}
                 >
                     Post
                 </AwesomeButtonProgress>
+                {/* <AwesomeButton 
+                style={{float:'right'}}
+                    size="icon" type="primary"  ><i class="fa fa-expand" aria-hidden="true"></i></AwesomeButton> */}
                 {/* </form> */}
                 
             </div>

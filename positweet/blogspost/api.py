@@ -68,7 +68,8 @@ class getBlogs(APIView):
                 queryset[i].content,
                 queryset[i].date_posted,
                 queryset[i].sentiment,
-                queryset[i].U_ID.username
+                queryset[i].U_ID.username,
+                queryset[i].title
             ]
         return Response(blog_content)
 
@@ -76,6 +77,9 @@ class postBlogs(APIView):
     def post(self, request):
         blogs = json.loads(request.body)
         querysetFetch = User.objects.get(id=blogs['id'])
+
+        if blogs['post'] == '' and blogs['title'] == '':
+            return Response({'error':'Please enter both title and blog'})
 
         url = 'https://www.sentiment-analysis-api.site/api/one'
         data = {"data": blogs['post']}
@@ -86,10 +90,11 @@ class postBlogs(APIView):
         queryset = Blogs.objects.create(
             U_ID = querysetFetch,
             content = blogs['post'],
-            sentiment = r.json()
+            sentiment = r.json(),
+            title=blogs['title']
         )
 
-        return Response({'posted':1})
+        return Response({'posted':1, 'error':""})
     
 
 
