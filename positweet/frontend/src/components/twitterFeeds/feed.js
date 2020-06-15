@@ -191,7 +191,8 @@ class Feed extends React.Component{
                             refresh_required: this.username == this.url_uname ? false : true,
                             fullName: data.name,
                             followr_count: data.follower_count,
-                            friend_count: data.friend_count
+                            friend_count: data.friend_count,
+                            count: 20
                         },
                         // loader:false
                     })
