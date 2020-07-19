@@ -5,5 +5,7 @@ urlpatterns = [
     path('login', views.index),
     path('signup', views.index),
     path('tweeterFeed/<str:name>', views.index),
-    path('blog/<str:name>', views.index)
+    path('blog/<str:name>', views.index),
+    path('user/<str:name>', views.index),
+    path('new', views.index)
 ]

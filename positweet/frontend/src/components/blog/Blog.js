@@ -4,7 +4,8 @@ import { AwesomeButton, AwesomeButtonProgress } from "react-awesome-button";
 import "react-awesome-button/dist/styles.css";
 // import 'react-awesome-button/dist/themes';
 import {
-    Redirect
+    Redirect,
+    Link
 } from "react-router-dom";
 import { func } from 'prop-types';
 import { PushSpinner, RotateSpinner } from "react-spinners-kit";
@@ -47,31 +48,40 @@ class UserProperty extends React.Component {
 }
 
 function PostFeed(props) {
-    console.log(props.props)
+    // console.log(props.props)
+    const userLink = "/user/" + props.props[3]
     return (
         <div className="neo mt-3 mb-3 p-2">
-            
-            <div> 
-                <small>{'@'+props.props[3]}</small> 
-            </div>
-
+            <div style={{marginLeft:"80px"}} >
             <div>
-                <p style={{fontWeight:'bold', textDecoration:'underline',textAlign:'center', marginBottom:'0em' }} >
-                    {props.props[4]}
-                    </p>
+                    <small> <Link to={{
+                        pathname: `/user/${props.props[3]}`,
+                        state: {
+                            username:props.user,
+                            clickedUser: props.props[5]
+                        }
+                    }} >{props.props[3]}</Link> </small>
+                {/* <small>{props.props[3]}</small>  */}
             </div>
-            <hr></hr>
-            <div style={{marginTop:'1em', marginBottom:'0.5em'}} > 
+        <hr></hr>
+            <div>
+                <h2 style={{fontWeight:'bold'}} >
+                    {props.props[4]}
+                    </h2>
+            </div>
+            {/* <hr></hr> */}
+            <div style={{marginTop:'1em', marginBottom:'0.5em', height:"148px", overflow:"hidden", whiteSpace:"pre-wrap"}} > 
                 {props.props[0]}
             </div>
             {/* <div className="text-secondary">{props.props[2]}</div> */}
-            <hr></hr>
+            {/* <hr></hr> */}
             <div className="right_align">
                 <small> {props.props[1]}</small>
                 <span className="left_align col3" >
                     {props.props[2] == 0 ? <small className="text-danger">&#128533; negative</small> : props.props[2] == 1 ? <small className="text-success">&#128512; positive</small> : <small className="text-secondary">&#x2753; unknown</small>}
 
                 </span>
+            </div>
             </div>
         </div>
     )
@@ -86,7 +96,8 @@ class PostBlog extends React.Component {
             id:this.props.id,
             title:"",
             getTweet: this.props.data_fun,
-            error:""
+            error:"",
+            username:this.props.uname
         }
         this.handleChange = this.handleChange.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
@@ -100,7 +111,7 @@ class PostBlog extends React.Component {
     }
 
     onSubmit(next){
-        console.log('comeshhere');
+        // console.log('comeshhere');
         fetch("api/addPost",{
             method:'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -132,11 +143,24 @@ class PostBlog extends React.Component {
     }
 
     render() {
-
+        console.log(this.state)
         return (
+
+           
+
             <div className='sticky-top' style={{top:'5em'}}>
+                <Link to={{
+                    pathname: '/new',
+                    state: {
+                        username: this.state.username,
+                        id: this.state.id
+                    }
+                }}
+                >
+                    <AwesomeButton className="size" size="large" type="primary" >New Post</AwesomeButton>
+                </Link>
                 {/* <form onSubmit={this.onSubmit}> */}
-        <p style={{color:'red'}}>{this.state.error}</p>
+        {/* <p style={{color:'red'}}>{this.state.error}</p>
                 <input style={{height:'30px', fontSize:'10pt', width:'100%', marginBottom:'1em'}}
                 type="text" placeholder="Title" name="title" value={this.state.title} onChange={this.handleChange} />
                 <textarea rows="10" name="text_area" value={this.state.text_area} onChange={this.handleChange}></textarea>
@@ -146,7 +170,7 @@ class PostBlog extends React.Component {
                 action={(element, next) => this.onSubmit(next)}
                 >
                     Post
-                </AwesomeButtonProgress>
+                </AwesomeButtonProgress> */}
                 {/* <AwesomeButton 
                 style={{float:'right'}}
                     size="icon" type="primary"  ><i class="fa fa-expand" aria-hidden="true"></i></AwesomeButton> */}
@@ -161,7 +185,7 @@ class Blog extends React.Component {
 
     constructor(props) {
         super(props)
-        console.log(this.props.location)
+        // console.log(this.props.location)
         if (this.props.location.state == undefined){
             this.temp_userdata = {
                 username: "",
@@ -297,7 +321,7 @@ class Blog extends React.Component {
         // obj_post.map((data)=> console.log(data))
         // Object.keys(obj_post).map((data) => console.log(obj_post[data]))
         // console.log(Object.keys(obj_post).length)
-
+        console.log(this.state)
         return (
             <div className="main">
 
@@ -306,10 +330,11 @@ class Blog extends React.Component {
                         Positweet
                     </a>
                     <div className="center_navbar">
-                        <div className="search-container">
+                        {/* <div className="search-container">
                             <input type="text" placeholder="Search .." name="search" value={this.state.search} onChange={this.handleChange} />
                             <AwesomeButton size="icon" type="primary"  ><i className="fa fa-search" /></AwesomeButton>
-                        </div>
+                        </div> */}
+                        <h3>Feed</h3>
                     </div>
                     <div className="form-inline">
                         <AwesomeButton size="medium" type="secondary" onPress={this.logoutSubmit} >Logout</AwesomeButton>
@@ -325,11 +350,11 @@ class Blog extends React.Component {
 
                     <div className="col-7 feed mt-4">
                         {/* <RotateSpinner className="center" size={70} color="#686769" loading={this.state.loader} /> */}
-                        {Object.keys(obj_post).map((post,i) => <PostFeed props={obj_post[post]} key={i} />)}
+                        {Object.keys(obj_post).map((post,i) => <PostFeed user={this.state.userdata.id} props={obj_post[post]} key={i} />)}
                     </div>
 
                     <div className="col common mt-5">
-                        <PostBlog id={this.state.userdata.id} data_fun={this.getTweets}/>
+                        <PostBlog id={this.state.userdata.id} uname={this.state.userdata.username} data_fun={this.getTweets}/>
                     </div>
 
                 </div>

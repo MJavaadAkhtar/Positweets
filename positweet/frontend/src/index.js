@@ -14,6 +14,8 @@ import Signup from './components/Signup'
 // import Feed from './components/twitterFeeds/feed';
 import Feed from './components/twitterFeeds/feed';
 import Blog from './components/blog/Blog';
+import UserPage from './components/blog/UserPage'
+import NewBlogPost from './components/blog/newBlog'
 
 class Index extends React.Component {
 
@@ -36,6 +38,8 @@ class Index extends React.Component {
                     <Route exact path="/tweeterFeed/:name" component={Feed}/>
 
                     <Route exact path="/blog/:name" component={Blog} />
+                    <Route exact path="/user/:name" component={UserPage} />
+                    <Route exact path="/new" component={NewBlogPost} />
 
                 </Switch>
             </Router>

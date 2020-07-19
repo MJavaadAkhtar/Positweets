@@ -1,5 +1,5 @@
 from rest_framework import routers
-from .api import UserViewSet,LoginUser,UserViewSetTest,postBlogs,getBlogs,BlogViewSet
+from .api import UserViewSet,LoginUser,UserViewSetTest,postBlogs,getBlogs,BlogViewSet,getBlogsUser,getUsers
 from django.conf.urls import url
 
 
@@ -11,7 +11,9 @@ urlpatterns = [
     url('api/loginUser', LoginUser.as_view()),
     url('api/addUsers', UserViewSet.as_view()),
     url('api/addPost', postBlogs.as_view()),
-    url('api/getBlogs', getBlogs.as_view())
+    url('api/getBlogs', getBlogs.as_view()),
+    url('api/getUserBlog', getBlogsUser.as_view()),
+    url('api/user/(?P<username>\w+)/$', getUsers.as_view())
 ]
 urlpatterns += router.urls
 

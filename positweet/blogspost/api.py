@@ -39,6 +39,7 @@ class UserViewSet(APIView):
         queryset = User.objects.create(
             full_name = login_req['full_name'],
             username = login_req['username'],
+            email=login_req['email'],
             password = pwd
         )
 
@@ -69,14 +70,38 @@ class getBlogs(APIView):
                 queryset[i].date_posted,
                 queryset[i].sentiment,
                 queryset[i].U_ID.username,
-                queryset[i].title
+                queryset[i].title,
+                queryset[i].U_ID.id
+            ]
+        return Response(blog_content)
+
+
+class getBlogsUser(APIView):
+    def post(self, request):
+        userObj = json.loads(request.body)
+        queryset = Blogs.objects.filter(U_ID=userObj['id']).order_by('date_posted').reverse()
+        blog_content = {}
+
+        print(queryset)
+        for i in range(queryset.count()):
+            blog_content[i]=[
+                queryset[i].content,
+                queryset[i].date_posted,
+                queryset[i].sentiment,
+                queryset[i].U_ID.username,
+                queryset[i].title,
+                queryset[i].U_ID.id
             ]
         return Response(blog_content)
 
 class postBlogs(APIView):
     def post(self, request):
         blogs = json.loads(request.body)
-        querysetFetch = User.objects.get(id=blogs['id'])
+        querysetFetch = User.objects.get(username=blogs['uname'])
+
+        if blogs['uname'] == 'test':
+            total = len(Blogs.objects.filter(U_ID=querysetFetch)) +1
+            blogs['title'] = "Sonnet: "+ str(total)
 
         if blogs['post'] == '' and blogs['title'] == '':
             return Response({'error':'Please enter both title and blog'})
@@ -95,6 +120,11 @@ class postBlogs(APIView):
         )
 
         return Response({'posted':1, 'error':""})
+        
     
 
 
+class getUsers(APIView):
+    def get(self, request, username):
+        print("comes hhere")
+        return Response({"hello":"hi"})
