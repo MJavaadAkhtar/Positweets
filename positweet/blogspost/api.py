@@ -99,7 +99,7 @@ class postBlogs(APIView):
         blogs = json.loads(request.body)
         querysetFetch = User.objects.get(username=blogs['uname'])
 
-        if blogs['uname'] == 'test':
+        if blogs['uname'] == 'Shakespeare_bot':
             total = len(Blogs.objects.filter(U_ID=querysetFetch)) +1
             blogs['title'] = "Sonnet: "+ str(total)
 
