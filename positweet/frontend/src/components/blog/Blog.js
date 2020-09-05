@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import { func } from 'prop-types';
 import { PushSpinner, RotateSpinner } from "react-spinners-kit";
+import ChatBox from "./chatBox";
 
 class UserProperty extends React.Component {
     constructor(props){
@@ -123,7 +124,7 @@ class PostBlog extends React.Component {
             })
         }).then(res => res.json())
             .then((data) => {
-                console.log(data)
+                // console.log(data)
                 this.setState({
                     error:data.error
                 })
@@ -143,7 +144,7 @@ class PostBlog extends React.Component {
     }
 
     render() {
-        console.log(this.state)
+        // console.log(this.state)
         return (
 
            
@@ -321,7 +322,7 @@ class Blog extends React.Component {
         // obj_post.map((data)=> console.log(data))
         // Object.keys(obj_post).map((data) => console.log(obj_post[data]))
         // console.log(Object.keys(obj_post).length)
-        console.log(this.state)
+        // console.log(this.state)
         return (
             <div className="main">
 
@@ -355,6 +356,7 @@ class Blog extends React.Component {
 
                     <div className="col common mt-5">
                         <PostBlog id={this.state.userdata.id} uname={this.state.userdata.username} data_fun={this.getTweets}/>
+                        <ChatBox uname={this.state.userdata.username} />
                     </div>
 
                 </div>
