@@ -29,6 +29,7 @@
     "react": "^16.13.1",
     "react-awesome-button": "^6.5.1",
     "react-dom": "^16.13.1",
+    "react-html-parser": "^2.0.2",
     "react-infinite-scroll-component": "^5.0.5",
     "react-redux": "^7.2.0",
     "react-router": "^5.1.2",
@@ -37,6 +38,7 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
-    "websocket": "^1.0.31"
+    "websocket": "^1.0.32",
+    "ws": "^7.3.1"
   }
 }

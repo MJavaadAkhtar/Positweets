@@ -1,8 +1,9 @@
 import React from 'react';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
+import ReactHtmlParser from 'react-html-parser';
+
+
 const client = new W3CWebSocket('ws://127.0.0.1:5000');
-
-
 class ChatBox extends React.Component{
     constructor(props){
         super(props)
@@ -27,15 +28,21 @@ class ChatBox extends React.Component{
     componentDidMount(){
         client.onopen = () => {
             console.log('Websocket Client Connected');
+            client.send(JSON.stringify({
+                msgType:"connection",
+                uname:this.state.uname,
+                content: ""
+            }));
         };
 
         client.onmessage = (message) => {
             let msg = JSON.parse(message.data);
-
             switch (msg.type){
                 case 'UserMsg':
+                    let prevMsg = this.state.webMsg;
+                    prevMsg.push(msg.data)
                     this.setState({
-                        webMsg:msg.data
+                        webMsg:prevMsg
                     });
                     break;
                 default:
@@ -47,7 +54,6 @@ class ChatBox extends React.Component{
 
         client.onclose = e => {
             console.log('closed');
-            
         };
     }
 
@@ -55,7 +61,7 @@ class ChatBox extends React.Component{
     submitMsg(event){
         event.preventDefault();
         client.send(JSON.stringify({
-            // type:'contentchange',
+            msgType:"msg",
             uname:this.state.uname,
             content: this.state.msgUser
         }))
@@ -65,13 +71,15 @@ class ChatBox extends React.Component{
     }
 
     render(){
+        const msg = this.state.webMsg
         return (
-            <div className="sticky-bottom" style={{bottom:'10px',position:'fixed', right:'10px', width:'25%'}}>
+            <div className="sticky-bottom" style={{bottom:'10px',position:'fixed', right:'10px'}}>
                 
                 <div 
                 style={{padding:'10px',overflow:'auto',height:'300px', backgroundColor:'white', whiteSpace:'break-spaces'}}>
-                    {this.state.webMsg}
-                {this.state.webMsg}
+                    {msg.map( (message, id) => {
+                        return (<div style={{whiteSpace:'normal'}} key={id}> {ReactHtmlParser(message)} </div>);
+                    }) }
                 </div>
 
                 <form onSubmit={this.submitMsg}>
