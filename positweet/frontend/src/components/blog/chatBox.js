@@ -3,7 +3,8 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 import ReactHtmlParser from 'react-html-parser';
 
 
-const client = new W3CWebSocket('ws://127.0.0.1:5000');
+// const client = new W3CWebSocket('ws://127.0.0.1:5000');
+const client = new W3CWebSocket('ws://nodeserver-positweet.herokuapp.com');
 class ChatBox extends React.Component{
     constructor(props){
         super(props)
