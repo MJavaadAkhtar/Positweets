@@ -58,6 +58,11 @@ wsServer.on('request', function(request) {
   );
 });
 
+setInterval(() => {
+  clients={};
+  clientList=[]
+},300000)
+
 // function noop() {}
 
 // function heartbeat() {
